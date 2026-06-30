@@ -1,32 +1,25 @@
 package org.example.model;
 
-public sealed abstract class Animal permits Dog,Cat,Bird {
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+
+public sealed abstract class Animal permits Dog,Cat,Bird,Bear {
     private final AnimalId id;
-    private String name;
-    private int age;
+    private final String name;
+    private final int age;
     private AdoptionStatus adoptionStatus;
 
     protected Animal(AnimalId id, String name, int age) {
+        if(name == null || name.isEmpty())
+            throw new RuntimeException("Animal name cannot be empty");
+        if(age < 0)
+            throw new RuntimeException("Age can not be negative");
         this.id = id;
         this.name = name;
         this.age = age;
         this.adoptionStatus = AdoptionStatus.AVAILABLE;
-    }
-
-    public AnimalId getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public AdoptionStatus getAdoptionStatus() {
-        return adoptionStatus;
     }
 
     public void markAsAdopted(){
